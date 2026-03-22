@@ -163,6 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <li class="toctree-l1"><a class="reference internal" href="Modelado_sklearn.html">Modelado en Sklearn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modelado_pyspark.html">Modelado Pyspark</a></li>
 </ul>
 
     </div>
@@ -333,7 +334,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -349,6 +352,23 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explicacion-de-variables-del-dataset">Explicacion de variables del dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-temporal">variable temporal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-anonimas">Variables categoricas anonimas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-sitio-web">Variables de sitio web</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-aplicacion">Variables de aplicación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-dispositivo">variables de dispositivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-de-identificador">variable de identificador</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -360,8 +380,208 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="explicacion-del-dataset">
 <h1>Explicacion del dataset<a class="headerlink" href="#explicacion-del-dataset" title="Permalink to this heading">#</a></h1>
-<p>El dataset fue sacado de la pagina de kaggle de una competicion realizada en el año 2015, con aproxiadamente 40 millones de registros</p>
+<p>El dataset fue sacado de la pagina de kaggle de una competicion realizada en el año 2015, con aproxiadamente 40 millones de registros, corresponde a registros de impresiones de anuncios en tiempo real y se utiliza para el problema de <strong>predicción de Click-Through Rate (CTR)</strong>.<br />
+Cada fila representa <strong>una impresión de un anuncio</strong>, y la variable objetivo indica si el usuario hizo click o no.</p>
 <p><strong>Fuente de los datos</strong>: <a class="reference external" href="https://www.kaggle.com/competitions/avazu-ctr-prediction/data">Fuente de prediccion</a></p>
+<ul class="simple">
+<li><p><strong>Número de observaciones:</strong> 40,428,967</p></li>
+<li><p><strong>Número de variables:</strong> 24</p></li>
+</ul>
+<section id="explicacion-de-variables-del-dataset">
+<h2>Explicacion de variables del dataset<a class="headerlink" href="#explicacion-de-variables-del-dataset" title="Permalink to this heading">#</a></h2>
+<hr class="docutils" />
+<section id="variable-objetivo">
+<h3>Variable objetivo<a class="headerlink" href="#variable-objetivo" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">click</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable binaria objetivo. Toma el valor <strong>1</strong> si el anuncio fue clickeado y <strong>0</strong> en caso contrario.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="variable-temporal">
+<h3>variable temporal<a class="headerlink" href="#variable-temporal" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hour</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Hora en la que ocurrió la impresión del anuncio, en formato <strong>YYMMDDHH</strong>. Permite extraer características temporales como hora del día o día de la semana.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variables-categoricas-anonimas">
+<h3>Variables categoricas anonimas<a class="headerlink" href="#variables-categoricas-anonimas" title="Permalink to this heading">#</a></h3>
+<p>Estas variables representan características del contexto del anuncio, usuario o entorno, y han sido anonimizadas por Avazu.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">C1</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima asociada al contexto del anuncio.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">C14</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">C15</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">C16</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">C17</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">C18</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">C19</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">C20</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">C21</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Variable categórica anónima.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variables-de-sitio-web">
+<h3>Variables de sitio web<a class="headerlink" href="#variables-de-sitio-web" title="Permalink to this heading">#</a></h3>
+<p>Describen el sitio web donde se mostró el anuncio.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">site_id</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Identificador único del sitio web.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">site_domain</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Dominio del sitio web.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">site_category</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Categoría del sitio web.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="variables-de-aplicacion">
+<h3>Variables de aplicación<a class="headerlink" href="#variables-de-aplicacion" title="Permalink to this heading">#</a></h3>
+<p>Describen la aplicación donde se mostró el anuncio (si aplica).</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">app_id</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Identificador único de la aplicación.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">app_domain</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Dominio de la aplicación.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">app_category</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Categoría de la aplicación.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="variables-de-dispositivo">
+<h3>variables de dispositivo<a class="headerlink" href="#variables-de-dispositivo" title="Permalink to this heading">#</a></h3>
+<p>Contienen información del dispositivo desde el cual se mostró el anuncio.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">device_id</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Identificador único del dispositivo (anonimizado).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">device_ip</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Dirección IP del dispositivo (anonimizada).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">device_model</span></code></p></td>
+<td><p>object</p></td>
+<td><p>Modelo del dispositivo.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">device_type</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Tipo de dispositivo (ej. móvil, tablet, desktop).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">device_conn_type</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Tipo de conexión del dispositivo (ej. wifi, datos móviles).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="variable-de-identificador">
+<h3>variable de identificador<a class="headerlink" href="#variable-de-identificador" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>float</p></td>
+<td><p>Identificador único de la impresión del anuncio. No aporta información predictiva y suele eliminarse antes del modelado.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -422,6 +642,29 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explicacion-de-variables-del-dataset">Explicacion de variables del dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-temporal">variable temporal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-anonimas">Variables categoricas anonimas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-sitio-web">Variables de sitio web</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-aplicacion">Variables de aplicación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-dispositivo">variables de dispositivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-de-identificador">variable de identificador</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

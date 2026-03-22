@@ -64,6 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Modelado_sklearn';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modelado Pyspark" href="Modelado_pyspark.html" />
     <link rel="prev" title="Tratamiento Inicial de los datos y Analisis exploratorio" href="Analisis_Exploratorio.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -162,6 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelado en Sklearn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modelado_pyspark.html">Modelado Pyspark</a></li>
 </ul>
 
     </div>
@@ -369,7 +371,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-de-mejor-modelo">Evaluacion de mejor modelo</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportacion-joblib">Exportacion joblib</a></li>
 </ul>
             </nav>
         </div>
@@ -1117,22 +1118,6 @@ weighted avg       0.79      0.57      0.63    200000
 <p>El ajuste del threshold permitió transformar un modelo inicialmente conservador e incapaz de detectar la clase minoritaria (recall ≈ 0) en un clasificador funcional, capaz de identificar aproximadamente el 70% de los casos positivos. Aunque esto incrementó los falsos positivos, el F1-score mejoró sustancialmente, lo cual es consistente con el comportamiento observado en la curva Precision–Recall y resulta más apropiado para un escenario altamente desbalanceado.</p>
 </section>
 </section>
-<section id="exportacion-joblib">
-<h2>Exportacion joblib<a class="headerlink" href="#exportacion-joblib" title="Permalink to this heading">#</a></h2>
-<p>realizamos un joblib para utilizar con LIME</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s2">&quot;best_mlp_pipeline.joblib&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;best_mlp_pipeline.joblib&#39;]
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1175,6 +1160,15 @@ weighted avg       0.79      0.57      0.63    200000
         <p class="prev-next-title">Tratamiento Inicial de los datos y Analisis exploratorio</p>
       </div>
     </a>
+    <a class="right-next"
+       href="Modelado_pyspark.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Modelado Pyspark</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div></div>
   
 </div>
@@ -1207,7 +1201,6 @@ weighted avg       0.79      0.57      0.63    200000
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-de-mejor-modelo">Evaluacion de mejor modelo</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportacion-joblib">Exportacion joblib</a></li>
 </ul>
   </nav></div>
 
