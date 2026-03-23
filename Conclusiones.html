@@ -364,6 +364,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-entorno-fue-mas-rapido">¿Qué entorno fue más rápido?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cual-fue-mas-preciso">¿Cuál fue más preciso?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuando-es-util-pyspark">¿Cuándo es útil PySpark?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-aporta-lime-al-analisis">¿Qué aporta LIME al análisis?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión general</a></li>
 </ul>
 </li>
@@ -489,6 +490,18 @@ document.write(`
 <li><p>Una curva de aprendizaje más pronunciada frente a scikit-learn.</p></li>
 </ul>
 </section>
+<section id="que-aporta-lime-al-analisis">
+<h3>¿Qué aporta LIME al análisis?<a class="headerlink" href="#que-aporta-lime-al-analisis" title="Permalink to this heading">#</a></h3>
+<p>La gráfica de importancia global aproximada con LIME (N=50) complementa la evaluación del modelo al ofrecer una perspectiva de <strong>interpretabilidad local agregada</strong>, algo que las métricas globales como ROC-AUC o F1-score no pueden proporcionar por sí solas.</p>
+<p>Los resultados revelan que el modelo entrenado con scikit-learn concentra su poder predictivo en un conjunto reducido de variables:</p>
+<ul class="simple">
+<li><p><strong>C18</strong> y <strong>hour_sin</strong> emergen como las features más influyentes por un margen considerable, sugiriendo que tanto ciertas características categóricas anónimas como el componente cíclico de la hora del día son determinantes en la predicción del clic.</p></li>
+<li><p><strong>C14</strong> y <strong>device_type</strong> ocupan el tercer y cuarto lugar, indicando que el tipo de dispositivo y otra feature categórica de contexto también aportan señal relevante.</p></li>
+<li><p>Variables como <code class="docutils literal notranslate"><span class="pre">site_domain</span></code>, <code class="docutils literal notranslate"><span class="pre">app_domain</span></code>, <code class="docutils literal notranslate"><span class="pre">device_conn_type</span></code> y <code class="docutils literal notranslate"><span class="pre">device_model</span></code> contribuyen de forma moderada y relativamente homogénea.</p></li>
+<li><p>Features como <code class="docutils literal notranslate"><span class="pre">dia_semana</span></code>, <code class="docutils literal notranslate"><span class="pre">app_category</span></code>, <code class="docutils literal notranslate"><span class="pre">hour_cos</span></code>, <code class="docutils literal notranslate"><span class="pre">franja_horaria</span></code> y <code class="docutils literal notranslate"><span class="pre">banner_pos</span></code> tienen una influencia menor, aunque no despreciable.</p></li>
+</ul>
+<p>Este análisis tiene implicaciones prácticas importantes: permite <strong>priorizar features</strong> en futuras iteraciones del modelo, identificar variables redundantes o de bajo aporte, y justificar decisiones de ingeniería de features con evidencia empírica. Asimismo, LIME es especialmente valioso en contextos como la publicidad digital, donde explicar <em>por qué</em> el modelo predice un clic puede ser tan importante como la predicción misma.</p>
+</section>
 <section id="conclusion-general">
 <h3>Conclusión general<a class="headerlink" href="#conclusion-general" title="Permalink to this heading">#</a></h3>
 <p>Los resultados muestran que la elección entre scikit-learn y PySpark ML depende del <strong>contexto del problema</strong> más que de una superioridad absoluta:</p>
@@ -564,6 +577,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-entorno-fue-mas-rapido">¿Qué entorno fue más rápido?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cual-fue-mas-preciso">¿Cuál fue más preciso?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuando-es-util-pyspark">¿Cuándo es útil PySpark?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-aporta-lime-al-analisis">¿Qué aporta LIME al análisis?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión general</a></li>
 </ul>
 </li>

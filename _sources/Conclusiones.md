@@ -53,6 +53,19 @@ Sin embargo, estos beneficios vienen acompañados de:
 - **Mayor complejidad de instalación y configuración**,
 - Una curva de aprendizaje más pronunciada frente a scikit-learn.
 
+### ¿Qué aporta LIME al análisis?
+
+La gráfica de importancia global aproximada con LIME (N=50) complementa la evaluación del modelo al ofrecer una perspectiva de **interpretabilidad local agregada**, algo que las métricas globales como ROC-AUC o F1-score no pueden proporcionar por sí solas.
+
+Los resultados revelan que el modelo entrenado con scikit-learn concentra su poder predictivo en un conjunto reducido de variables:
+
+- **C18** y **hour_sin** emergen como las features más influyentes por un margen considerable, sugiriendo que tanto ciertas características categóricas anónimas como el componente cíclico de la hora del día son determinantes en la predicción del clic.
+- **C14** y **device_type** ocupan el tercer y cuarto lugar, indicando que el tipo de dispositivo y otra feature categórica de contexto también aportan señal relevante.
+- Variables como `site_domain`, `app_domain`, `device_conn_type` y `device_model` contribuyen de forma moderada y relativamente homogénea.
+- Features como `dia_semana`, `app_category`, `hour_cos`, `franja_horaria` y `banner_pos` tienen una influencia menor, aunque no despreciable.
+
+Este análisis tiene implicaciones prácticas importantes: permite **priorizar features** en futuras iteraciones del modelo, identificar variables redundantes o de bajo aporte, y justificar decisiones de ingeniería de features con evidencia empírica. Asimismo, LIME es especialmente valioso en contextos como la publicidad digital, donde explicar *por qué* el modelo predice un clic puede ser tan importante como la predicción misma.
+
 ### Conclusión general
 
 Los resultados muestran que la elección entre scikit-learn y PySpark ML depende del **contexto del problema** más que de una superioridad absoluta:
