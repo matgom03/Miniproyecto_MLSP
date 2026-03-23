@@ -163,6 +163,9 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <li class="toctree-l1"><a class="reference internal" href="Modelado_sklearn.html">Modelado en Sklearn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modelado_pyspark.html">Modelado Pyspark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LIME_pyspark.html">LIME - Explicabilidad Modelo PySpark MLP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conclusiones.html">Conclusiones</a></li>
 </ul>
 
     </div>
@@ -461,19 +464,12 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cramers_v</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="n">ct</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">chi2</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">ct</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">chi2</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cramers_v_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">categorical_cols</span><span class="p">,</span><span class="n">sample_size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cramers_v_matrix</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">categorical_cols</span><span class="p">,</span>
+    <span class="n">sample_size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">):</span>
     <span class="c1"># Muestreo para evitar explosión de memoria</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">sample_size</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_cols</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
@@ -482,6 +478,14 @@ document.write(`
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_cols</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">cramers_v</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">contingency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">chi2</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">contingency</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">contingency</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">chi2</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">categorical_cols</span><span class="p">)</span>
     <span class="n">matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)),</span>
@@ -549,33 +553,33 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 RangeIndex: 40428967 entries, 0 to 40428966
 Data columns (total 24 columns):
- #   Column            Dtype  
----  ------            -----  
- 0   id                float64
- 1   click             int64  
- 2   hour              int64  
- 3   C1                int64  
- 4   banner_pos        int64  
- 5   site_id           object 
- 6   site_domain       object 
- 7   site_category     object 
- 8   app_id            object 
- 9   app_domain        object 
- 10  app_category      object 
- 11  device_id         object 
- 12  device_ip         object 
- 13  device_model      object 
- 14  device_type       int64  
- 15  device_conn_type  int64  
- 16  C14               int64  
- 17  C15               int64  
- 18  C16               int64  
- 19  C17               int64  
- 20  C18               int64  
- 21  C19               int64  
- 22  C20               int64  
- 23  C21               int64  
-dtypes: float64(1), int64(14), object(9)
+ #   Column            Dtype 
+---  ------            ----- 
+ 0   id                object
+ 1   click             int64 
+ 2   hour              int64 
+ 3   C1                int64 
+ 4   banner_pos        int64 
+ 5   site_id           object
+ 6   site_domain       object
+ 7   site_category     object
+ 8   app_id            object
+ 9   app_domain        object
+ 10  app_category      object
+ 11  device_id         object
+ 12  device_ip         object
+ 13  device_model      object
+ 14  device_type       int64 
+ 15  device_conn_type  int64 
+ 16  C14               int64 
+ 17  C15               int64 
+ 18  C16               int64 
+ 19  C17               int64 
+ 20  C18               int64 
+ 21  C19               int64 
+ 22  C20               int64 
+ 23  C21               int64 
+dtypes: int64(14), object(10)
 memory usage: 7.2+ GB
 </pre></div>
 </div>
@@ -658,13 +662,13 @@ memory usage: 7.2+ GB
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/52df92105d0d98d25a92bdc892544b8f737472226acda6ee8f5337105137f377.png" src="_images/52df92105d0d98d25a92bdc892544b8f737472226acda6ee8f5337105137f377.png" />
+<img alt="_images/7774cb12ca9e9a650793ce76b36ae6fe0a58f7f2f4e93f77217f171c75275537.png" src="_images/7774cb12ca9e9a650793ce76b36ae6fe0a58f7f2f4e93f77217f171c75275537.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>La Tasa de Clic (CTR) global es: 16.98%
 </pre></div>
 </div>
 </div>
 </div>
-<p>Se puede observar que la variable objetivo tiene un desbalance bastante notorio en el No, por lo que se tendra que aplicar el balanceo a la hora de realizar el modelo</p>
+<p>Se puede observar que la varaible objetivo tiene un desbalance bastante notorio en el No, por lo que se tendra que aplicar el balanceo a la hora de realizar el modelo</p>
 <p>Se analizan si hay datos faltantes</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -781,7 +785,7 @@ dtype: int64
 </div>
 </div>
 <p>Podemos observar el numero de categorias de cada variable, con algunas que son demasiado numerosas, por lo que se deben tomar con precaucion a la hora de realizar el modelo</p>
-<p>Realizamos analisis univariado para variables categoricas, con graficas para algunas de las variables con menos categorias para que los graficos puedan ser analizados</p>
+<p>Realizamos analisis univariado para variables categoricas</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;device_type&#39;</span><span class="p">,</span><span class="s1">&#39;device_conn_type&#39;</span><span class="p">,</span><span class="s1">&#39;banner_pos&#39;</span><span class="p">]</span>
@@ -796,14 +800,13 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a9fc4d07aca624d164b9fd4f5d9350b68ff51e898857db2230e5346cf31f0a3d.png" src="_images/a9fc4d07aca624d164b9fd4f5d9350b68ff51e898857db2230e5346cf31f0a3d.png" />
+<img alt="_images/8cded5c3c2157c4bbd669ac98081563ed349b64276bd40d6d71d0a1eb0c51565.png" src="_images/8cded5c3c2157c4bbd669ac98081563ed349b64276bd40d6d71d0a1eb0c51565.png" />
 </div>
 </div>
-<p>Observamos que hay algunas clases de las variables en la que algunas clases dominan en comparacion de otras clases</p>
-<p>Realizamos tambien una comparacion entre los clicks y algunas de las variables con menos categorias, las variables con demasiadas categorias se limitaron a solo las 20 mas importantes.</p>
+<p>Realizamos tambien una comparacion entre los clicks y las variables, las variables con demasiadas categorias se limitaron a solo las 20 mas importantes</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;banner_pos&#39;</span><span class="p">,</span> <span class="s1">&#39;device_type&#39;</span><span class="p">,</span> <span class="s1">&#39;device_conn_type&#39;</span><span class="p">,</span><span class="s1">&#39;franja_horaria&#39;</span><span class="p">,</span><span class="s1">&#39;site_category&#39;</span><span class="p">,</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span><span class="s1">&#39;C15&#39;</span><span class="p">,</span><span class="s1">&#39;C16&#39;</span><span class="p">,</span><span class="s1">&#39;C18&#39;</span><span class="p">,</span><span class="s1">&#39;C21&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;banner_pos&#39;</span><span class="p">,</span> <span class="s1">&#39;device_type&#39;</span><span class="p">,</span> <span class="s1">&#39;device_conn_type&#39;</span><span class="p">,</span><span class="s1">&#39;franja_horaria&#39;</span><span class="p">,</span><span class="s1">&#39;site_category&#39;</span><span class="p">,</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span><span class="s1">&#39;C15&#39;</span><span class="p">,</span><span class="s1">&#39;C16&#39;</span><span class="p">,</span><span class="s1">&#39;C18&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -818,48 +821,43 @@ dtype: int64
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: banner_pos ---
 </pre></div>
 </div>
-<img alt="_images/7c882c99d31528d5269223ad3c150fb49d5f81d0b0d94f9e82bbaa00e35f10c5.png" src="_images/7c882c99d31528d5269223ad3c150fb49d5f81d0b0d94f9e82bbaa00e35f10c5.png" />
+<img alt="_images/00e6ad1aaf07c7078da3b2238ac261ec91ce864e21008cb05855e55c4a80b3b9.png" src="_images/00e6ad1aaf07c7078da3b2238ac261ec91ce864e21008cb05855e55c4a80b3b9.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: device_type ---
 </pre></div>
 </div>
-<img alt="_images/3a0aafc80e7813cb391cb9ed5d8717466f4da1734162585c4a44dbd46eee83db.png" src="_images/3a0aafc80e7813cb391cb9ed5d8717466f4da1734162585c4a44dbd46eee83db.png" />
+<img alt="_images/fddb7ff704d7386af33693d4c8ae2d0a35132a703b376feca55356b8fc62c929.png" src="_images/fddb7ff704d7386af33693d4c8ae2d0a35132a703b376feca55356b8fc62c929.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: device_conn_type ---
 </pre></div>
 </div>
-<img alt="_images/aab4e4a7003cc19b377e1e5a4a93eb23c8754f7f7bd93990672356721d03b1eb.png" src="_images/aab4e4a7003cc19b377e1e5a4a93eb23c8754f7f7bd93990672356721d03b1eb.png" />
+<img alt="_images/cdb7a0cfeca62fff1495112e859834c6d6f138a62e9d83b2e69fba8c37f7b10c.png" src="_images/cdb7a0cfeca62fff1495112e859834c6d6f138a62e9d83b2e69fba8c37f7b10c.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: franja_horaria ---
 </pre></div>
 </div>
-<img alt="_images/f217485308be5977c68a37715cae6a1b8799e3790fe7c75fb6f9bf84a8e4d2a8.png" src="_images/f217485308be5977c68a37715cae6a1b8799e3790fe7c75fb6f9bf84a8e4d2a8.png" />
+<img alt="_images/bd6f63153a09d7898940d867eb34cb05b37356f94d6a3e5441172ff6a04fd0c0.png" src="_images/bd6f63153a09d7898940d867eb34cb05b37356f94d6a3e5441172ff6a04fd0c0.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: site_category ---
 Nota: site_category tiene 26 valores. Graficando solo el Top 20 por volumen.
 </pre></div>
 </div>
-<img alt="_images/14b675d39f5b030542636e03248c83722458ba880b1c22384e9501bc98664384.png" src="_images/14b675d39f5b030542636e03248c83722458ba880b1c22384e9501bc98664384.png" />
+<img alt="_images/0a6913c41b96aa35b6f23fe95195b2b77870d070c0a03a36bdf5514a5c2178a6.png" src="_images/0a6913c41b96aa35b6f23fe95195b2b77870d070c0a03a36bdf5514a5c2178a6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: C1 ---
 </pre></div>
 </div>
-<img alt="_images/4fb93ab394e9e27dcd798384d347a88fb93e6203f0b0e9311574697944c97a31.png" src="_images/4fb93ab394e9e27dcd798384d347a88fb93e6203f0b0e9311574697944c97a31.png" />
+<img alt="_images/9af0520747c9218e3ae402d5c67bef673bf07e05e9079768564c246c867097b9.png" src="_images/9af0520747c9218e3ae402d5c67bef673bf07e05e9079768564c246c867097b9.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: C15 ---
 </pre></div>
 </div>
-<img alt="_images/dfccebc1f99d5ec2857e54b4ba960f17eaef2909902bf44563ab5bfec6c9faaa.png" src="_images/dfccebc1f99d5ec2857e54b4ba960f17eaef2909902bf44563ab5bfec6c9faaa.png" />
+<img alt="_images/351d4961e7da6e354390b891ee311f008bf4c6dc896e41468a70b8a3d15fa9c9.png" src="_images/351d4961e7da6e354390b891ee311f008bf4c6dc896e41468a70b8a3d15fa9c9.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: C16 ---
 </pre></div>
 </div>
-<img alt="_images/f0f4860bee2c14de2a2def799c8ea86bfb844a9f0fdd0696566f79cba40b43b6.png" src="_images/f0f4860bee2c14de2a2def799c8ea86bfb844a9f0fdd0696566f79cba40b43b6.png" />
+<img alt="_images/33f2bf049ba2f66af5fc0d120ec6165fa973b2fdc3936ac280724801bcfe983f.png" src="_images/33f2bf049ba2f66af5fc0d120ec6165fa973b2fdc3936ac280724801bcfe983f.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: C18 ---
 </pre></div>
 </div>
-<img alt="_images/53bdae0d912ed0183dfcbb94751b74926bd62ce2b5cecaf8c43c427000101a60.png" src="_images/53bdae0d912ed0183dfcbb94751b74926bd62ce2b5cecaf8c43c427000101a60.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Procesando: C21 ---
-Nota: C21 tiene 60 valores. Graficando solo el Top 20 por volumen.
-</pre></div>
-</div>
-<img alt="_images/a62644fbef7e36cb987b945cc854110364c357bcf1829d3fd720400d73e05a2e.png" src="_images/a62644fbef7e36cb987b945cc854110364c357bcf1829d3fd720400d73e05a2e.png" />
+<img alt="_images/8740cfc81fa3d2e1053ef48a030ceba15f66f8ecccf45f2ffcf6a0e2293a49dc.png" src="_images/8740cfc81fa3d2e1053ef48a030ceba15f66f8ecccf45f2ffcf6a0e2293a49dc.png" />
 </div>
 </div>
-<p>Gracias a este grafico podemos observar cuales categorias son las que hay que tener mas en cuenta a la hora de hacer el modelo, porque sabemos cuales estan por encima del pormedio de las personas que dijeron que si, ademas que vemos que C15 y C16 son realmente dimensiones que no son categorias por lo que se tomaran en cuenta a la hora del modelado</p>
+<p>Gracias a este grafico podemos observar cuales categorias son las que hay que tener mas en cuenta a la hora de hacer el modelo, porque sabemos cuales estan por encima del pormedio de las personas que dijeron que si</p>
 <p>Realizamos un lineplot para determinar de manera mas detallada como se distribuye CTR por hora</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -876,28 +874,24 @@ Nota: C21 tiene 60 valores. Graficando solo el Top 20 por volumen.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fbe033e50fa71c9ef85ac159a9f17a53e1f89abd28fcddda8da189e62a44eb57.png" src="_images/fbe033e50fa71c9ef85ac159a9f17a53e1f89abd28fcddda8da189e62a44eb57.png" />
+<img alt="_images/58b1889247ed4ad63d5873a3608938df19c15c9ca4d187454735543fa6ec109b.png" src="_images/58b1889247ed4ad63d5873a3608938df19c15c9ca4d187454735543fa6ec109b.png" />
 </div>
 </div>
 <p>Al realizar este grafico podemos confirmar que la hora es una de las variables mas importantes para el modelo de este dataset porque a partir de ella podemos observar los picos en donde se realizan mas clicks siendo estos la 1 AM,7 AM y las 3PM con menor atencion en la noche o al final de la madrugada no hay tanta actividad,lo cual coincide con CTR de la franja horaria, lo que hace a las variables temporales variables claves para el modelado de la red neuronal.</p>
-<p>Realizamos una matriz de correlaciones con V de cramer para de esta manera determinar si hay variables muy correlacionadas entre si y determinar si alguna se puede eliminar</p>
+<p>Realizamos correlacion de las variables categoricas</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_vars</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;C1&quot;</span><span class="p">,</span>
     <span class="s2">&quot;banner_pos&quot;</span><span class="p">,</span>
     <span class="s2">&quot;device_type&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;device_conn_type&quot;</span><span class="p">,</span><span class="s2">&quot;site_domain&quot;</span><span class="p">,</span><span class="s2">&quot;site_category&quot;</span><span class="p">,</span><span class="s2">&quot;app_domain&quot;</span><span class="p">,</span><span class="s2">&quot;app_category&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;device_conn_type&quot;</span><span class="p">,</span>
     <span class="s2">&quot;C14&quot;</span><span class="p">,</span> <span class="s2">&quot;C15&quot;</span><span class="p">,</span> <span class="s2">&quot;C16&quot;</span><span class="p">,</span> <span class="s2">&quot;C17&quot;</span><span class="p">,</span> <span class="s2">&quot;C18&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;C19&quot;</span><span class="p">,</span> <span class="s2">&quot;C20&quot;</span><span class="p">,</span> <span class="s2">&quot;C21&quot;</span>
+    <span class="s2">&quot;C19&quot;</span><span class="p">,</span> <span class="s2">&quot;C20&quot;</span><span class="p">,</span> <span class="s2">&quot;C21&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;franja_horaria&quot;</span>
 <span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cramers_matrix</span> <span class="o">=</span> <span class="n">cramers_v_matrix</span><span class="p">(</span>
+
+<span class="n">cramers_matrix</span> <span class="o">=</span> <span class="n">cramers_v_matrix</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>
     <span class="n">categorical_cols</span><span class="o">=</span><span class="n">cat_vars</span><span class="p">,</span>
     <span class="n">sample_size</span><span class="o">=</span><span class="mi">1_000_000</span>
@@ -911,11 +905,13 @@ Nota: C21 tiene 60 valores. Graficando solo el Top 20 por volumen.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
     <span class="n">cramers_matrix</span><span class="p">,</span>
-    <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span>
-    <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span>
+    <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>        
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span>         
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Cramér&#39;s V&quot;</span><span class="p">}</span>
 <span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Matriz de asociación categórica (Cramér&#39;s V)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -923,14 +919,14 @@ Nota: C21 tiene 60 valores. Graficando solo el Top 20 por volumen.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8b7956b81a4e3fafa82ac78b7929dec07d59f81d92799471a2ff9413337feae9.png" src="_images/8b7956b81a4e3fafa82ac78b7929dec07d59f81d92799471a2ff9413337feae9.png" />
+<img alt="_images/3b887f182acb7ebe9dcb4e28ff0c86bdf25e3ab8101a01c90fe72e7c9801e342.png" src="_images/3b887f182acb7ebe9dcb4e28ff0c86bdf25e3ab8101a01c90fe72e7c9801e342.png" />
 </div>
 </div>
-<p>Podemos observar que hay variables correlacionadas de manera fuerte entre si, sobre todo las variables categoricas anonimas, por lo que de ellas solo se conservara C14 para el proyecto. se mantendra site domain en vez de site category debido a ser variables correlacionadas</p>
-<p>Exportamos el dataframe en modo parquet para ser usado en las otras partes del jbook</p>
+<p>Podemos observar que algunas de las variables tienen alta correlacion entre ellas, como por ejemplo entre las variables categoricas anonimas hay correlacion muy alta por lo que solo se tomaran unas pocas a la hora del modelado</p>
+<p>Se observa que las correlaciones no son significativas en las variables numericas, esto es esperado porque las variables categoricas son las principales en el dataset</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#df.to_parquet(&#39;datos_procesados.parquet&#39;, engine=&#39;pyarrow&#39;, compression=&#39;snappy&#39;)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;datos_procesados.parquet&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;pyarrow&#39;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;snappy&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

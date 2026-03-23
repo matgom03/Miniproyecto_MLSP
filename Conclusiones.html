@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Introduccion &#8212; Miniproyecto1_DeepLearning</title>
+    <title>Conclusiones &#8212; Miniproyecto1_DeepLearning</title>
   
   
   
@@ -61,10 +61,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'Introduccion';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Conclusiones';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Explicacion del dataset" href="explicacion_dataset.html" />
+    <link rel="prev" title="LIME - Explicabilidad Modelo PySpark MLP" href="LIME_pyspark.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -130,7 +130,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="Introduccion.html">
   
   
   
@@ -149,13 +149,13 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="Introduccion.html">
                     Introduccion
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="explicacion_dataset.html">Explicacion del dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Analisis_Exploratorio.html">Tratamiento Inicial de los datos y Analisis exploratorio</a></li>
 
@@ -163,9 +163,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="Modelado_sklearn.html">Modelado en Sklearn</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Modelado_pyspark.html">Modelado Pyspark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LIME_sklearn.html">LIME - Explicabilidad del modelo MLP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="LIME_pyspark.html">LIME - Explicabilidad Modelo PySpark MLP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Conclusiones.html">Conclusiones</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Conclusiones</a></li>
 </ul>
 
     </div>
@@ -237,7 +236,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FIntroduccion.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FConclusiones.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -267,7 +266,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/Introduccion.md" target="_blank"
+      <li><a href="_sources/Conclusiones.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -336,7 +335,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -347,11 +348,26 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduccion</h1>
+    <h1>Conclusiones</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-comparacion">Tabla de comparacion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reflexion-final">Reflexión final</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-entorno-fue-mas-rapido">¿Qué entorno fue más rápido?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cual-fue-mas-preciso">¿Cuál fue más preciso?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuando-es-util-pyspark">¿Cuándo es útil PySpark?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión general</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -361,12 +377,127 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduccion">
-<h1>Introduccion<a class="headerlink" href="#introduccion" title="Permalink to this heading">#</a></h1>
-<p>En el presente trabajo se realiza el uso de las redes neuronales y <strong>MLP(Multilayer Perceptron)</strong> para poder predecir si un usuario hará clic en un anuncio móvil <strong>(click = 1)</strong> o no <strong>(click = 0)</strong>.</p>
-<p>Se realizo un extenso analisis exploratorio y preprocesamiento para poder realizar el modelado con sklearn y luego se realizo en Pyspark para poder realizar comparaciones con LIME y determinar cual fue mas efectivo.</p>
-<div class="toctree-wrapper compound">
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="conclusiones">
+<h1>Conclusiones<a class="headerlink" href="#conclusiones" title="Permalink to this heading">#</a></h1>
+<p>Se realizara una comparacion final y una reflexion critica acerca de los resultados y ambos metodos</p>
+<section id="tabla-de-comparacion">
+<h2>Tabla de comparacion<a class="headerlink" href="#tabla-de-comparacion" title="Permalink to this heading">#</a></h2>
+<p>Se crea la tabla de comparacion entre los mejores modelos, en pyspark y sklearn siendo el gridsearch elegido</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspecto</p></th>
+<th class="head"><p>scikit-learn</p></th>
+<th class="head"><p>PySpark ML</p></th>
+<th class="head"><p>Comentarios</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Modelo</p></td>
+<td><p>MLP</p></td>
+<td><p>MLP</p></td>
+<td><p>Modelos equivalentes usados</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dataset</p></td>
+<td><p>Avazu (subset)</p></td>
+<td><p>Avazu (completo)</p></td>
+<td><p>el subset fue de 1 millon de datos</p></td>
+</tr>
+<tr class="row-even"><td><p>Número de muestras</p></td>
+<td><p>1M</p></td>
+<td><p>40M</p></td>
+<td><p>PySpark escala mejor</p></td>
+</tr>
+<tr class="row-odd"><td><p>Número de features</p></td>
+<td><p>13</p></td>
+<td><p>23</p></td>
+<td><p>se utilizo una muestra de variables relevantes en sklearn</p></td>
+</tr>
+<tr class="row-even"><td><p>ROC-AUC</p></td>
+<td><p>0.656</p></td>
+<td><p>0.673</p></td>
+<td><p>Diferencias marginales</p></td>
+</tr>
+<tr class="row-odd"><td><p>Precision</p></td>
+<td><p>0.24</p></td>
+<td><p>0.27</p></td>
+<td><p>Threshold optimizado en mejores modelos</p></td>
+</tr>
+<tr class="row-even"><td><p>Recall</p></td>
+<td><p>0.70</p></td>
+<td><p>0.62</p></td>
+<td><p>Las metricas evaluadas en mejores modelos</p></td>
+</tr>
+<tr class="row-odd"><td><p>F1-score</p></td>
+<td><p>0.36</p></td>
+<td><p>0.37</p></td>
+<td><p>Métrica objetivo en mejores modelos</p></td>
+</tr>
+<tr class="row-even"><td><p>Threshold usado</p></td>
+<td><p>0.15</p></td>
+<td><p>0.54</p></td>
+<td><p>Maximiza F1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tiempo de entrenamiento</p></td>
+<td><p>119 min</p></td>
+<td><p>208.4 min</p></td>
+<td><p>En sklearn el gridsearch completo y en pyspark el grid</p></td>
+</tr>
+<tr class="row-even"><td><p>Tiempo de validacion</p></td>
+<td><p>0.01 s</p></td>
+<td><p>0.1 s</p></td>
+<td><p>En mejores modelos</p></td>
+</tr>
+<tr class="row-odd"><td><p>Facilidad de implementación</p></td>
+<td><p>Alta</p></td>
+<td><p>Baja</p></td>
+<td><p>PySpark necesito de mas instalaciones para funcionar, las cuales pueden ser delicadas</p></td>
+</tr>
+</tbody>
+</table>
+<p>En general pyspark logro resultados mas rapidos en cuanto a metricas las cuales son ligeramente mayores en comparacion a sklearn a pesar de haber sido optimizado mediante el uso de haber usado una muestra representativa de la poblacion y un conjunto de variables reducido. Demostrando como pyspark es mas eficiente para datasets mas grandes, sin embargo sklearn es mas rapido y subceptible a experimentacion comparado con pyspark que debe ser tratado con mas cuidado.</p>
+</section>
+<section id="reflexion-final">
+<h2>Reflexión final<a class="headerlink" href="#reflexion-final" title="Permalink to this heading">#</a></h2>
+<p>Considerando los resultados finales, se pueden extraer conclusiones más matizadas sobre el uso de scikit-learn y PySpark ML en el entrenamiento de modelos MLP sobre el dataset Avazu.</p>
+<section id="que-entorno-fue-mas-rapido">
+<h3>¿Qué entorno fue más rápido?<a class="headerlink" href="#que-entorno-fue-mas-rapido" title="Permalink to this heading">#</a></h3>
+<p>Al considerar el <strong>tiempo total del grid search completo</strong>, <strong>scikit-learn resultó ser más rápido</strong> que PySpark ML. El grid completo en scikit-learn tomó aproximadamente <strong>119 minutos</strong> utilizando un subset de 1 millón de registros, mientras que el grid search en PySpark, entrenado sobre el dataset completo de 40 millones de muestras, requirió alrededor de <strong>208 minutos</strong>.</p>
+<p>Esto evidencia que, aunque PySpark ofrece paralelización, el <strong>overhead propio del entorno distribuido</strong>, junto con la mayor complejidad del pipeline y el tamaño del dataset, puede resultar en tiempos de entrenamiento más altos cuando se consideran búsquedas exhaustivas de hiperparámetros.</p>
+</section>
+<section id="cual-fue-mas-preciso">
+<h3>¿Cuál fue más preciso?<a class="headerlink" href="#cual-fue-mas-preciso" title="Permalink to this heading">#</a></h3>
+<p>En términos de desempeño predictivo, <strong>PySpark obtuvo métricas ligeramente superiores</strong>, con un ROC-AUC de 0.673 y un F1-score de 0.37, frente a 0.656 y 0.36 en scikit-learn. No obstante, estas diferencias son <strong>marginales</strong> y deben interpretarse a la luz de las condiciones experimentales:</p>
+<ul class="simple">
+<li><p>PySpark fue entrenado sobre el <strong>dataset completo</strong> y con un mayor número de features.</p></li>
+<li><p>scikit-learn utilizó un <strong>subset reducido</strong> y una selección más acotada de variables.</p></li>
+</ul>
+<p>Por tanto, ambos enfoques logran resultados comparables en términos de calidad del modelo.</p>
+</section>
+<section id="cuando-es-util-pyspark">
+<h3>¿Cuándo es útil PySpark?<a class="headerlink" href="#cuando-es-util-pyspark" title="Permalink to this heading">#</a></h3>
+<p>PySpark demuestra su utilidad principalmente cuando:</p>
+<ul class="simple">
+<li><p>El volumen de datos excede la capacidad de procesamiento local,</p></li>
+<li><p>Se requiere entrenar modelos sobre el <strong>dataset completo sin muestreo</strong>,</p></li>
+<li><p>El objetivo es escalar el flujo de trabajo a entornos productivos distribuidos.</p></li>
+</ul>
+<p>Sin embargo, estos beneficios vienen acompañados de:</p>
+<ul class="simple">
+<li><p><strong>Mayores tiempos de entrenamiento</strong> al ejecutar grid searches completos,</p></li>
+<li><p><strong>Mayor complejidad de instalación y configuración</strong>,</p></li>
+<li><p>Una curva de aprendizaje más pronunciada frente a scikit-learn.</p></li>
+</ul>
+</section>
+<section id="conclusion-general">
+<h3>Conclusión general<a class="headerlink" href="#conclusion-general" title="Permalink to this heading">#</a></h3>
+<p>Los resultados muestran que la elección entre scikit-learn y PySpark ML depende del <strong>contexto del problema</strong> más que de una superioridad absoluta:</p>
+<ul class="simple">
+<li><p><strong>scikit-learn</strong> es más eficiente para experimentación rápida, prototipado y búsquedas de hiperparámetros sobre datasets de tamaño moderado.</p></li>
+<li><p><strong>PySpark ML</strong> es una alternativa robusta cuando se prioriza la escalabilidad y el uso del dataset completo, incluso a costa de mayor tiempo computacional y complejidad operativa.</p></li>
+</ul>
+<p>En consecuencia, una estrategia híbrida —prototipar en scikit-learn y escalar en PySpark— puede ser la opción más efectiva en escenarios reales.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -400,14 +531,14 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="right-next"
-       href="explicacion_dataset.html"
-       title="next page">
+    <a class="left-prev"
+       href="LIME_pyspark.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Explicacion del dataset</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">LIME - Explicabilidad Modelo PySpark MLP</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
@@ -418,6 +549,27 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-comparacion">Tabla de comparacion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reflexion-final">Reflexión final</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-entorno-fue-mas-rapido">¿Qué entorno fue más rápido?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cual-fue-mas-preciso">¿Cuál fue más preciso?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuando-es-util-pyspark">¿Cuándo es útil PySpark?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión general</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
