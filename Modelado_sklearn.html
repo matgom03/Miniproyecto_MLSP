@@ -614,7 +614,7 @@ Balance test  - click=1: 0.170
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tiempo estimado: 5.11 minutos
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tiempo estimado: 5.51 minutos
 </pre></div>
 </div>
 </div>
@@ -838,7 +838,7 @@ weighted avg       0.77      0.17      0.06    200000
 </section>
 <section id="gridsearch">
 <h2>Gridsearch<a class="headerlink" href="#gridsearch" title="Permalink to this heading">#</a></h2>
-<p>Se realiza un gridsearch, modificando los paramteros de hidden layers, alpha y max iter para determinar cual esla combinacion que genera mejores resultados para el modelo</p>
+<p>Se realiza un gridsearch, modificando los paramteros de hidden layers, alpha y max iter para determinar cual es la combinacion que genera mejores resultados para el modelo</p>
 <section id="entrenamiento-de-gridsearch">
 <h3>Entrenamiento de Gridsearch<a class="headerlink" href="#entrenamiento-de-gridsearch" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
@@ -881,7 +881,7 @@ weighted avg       0.77      0.17      0.06    200000
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
     <span class="n">estimator</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
     <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">,</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span>        
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span>        
     <span class="n">cv</span><span class="o">=</span><span class="mi">3</span>              
 <span class="p">)</span>
 </pre></div>
@@ -899,7 +899,7 @@ weighted avg       0.77      0.17      0.06    200000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tiempo total de entrenamiento (GridSearch): 119.42 minutos
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tiempo total de entrenamiento (GridSearch): 120.12 minutos
 </pre></div>
 </div>
 </div>
@@ -916,9 +916,9 @@ weighted avg       0.77      0.17      0.06    200000
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejores parámetros:
-{&#39;classifier__alpha&#39;: 0.0001, &#39;classifier__hidden_layer_sizes&#39;: (128, 64), &#39;classifier__max_iter&#39;: 100}
+{&#39;classifier__alpha&#39;: 0.01, &#39;classifier__hidden_layer_sizes&#39;: (128, 64), &#39;classifier__max_iter&#39;: 50}
 Mejor ROC-AUC (CV):
-0.6461374242189871
+0.1419046664738584
 </pre></div>
 </div>
 </div>
@@ -953,23 +953,23 @@ Mejor ROC-AUC (CV):
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tiempo estimado: 0.01 minutos
-ROC-AUC: 0.6562677146927469
-Accuracy: 0.830485
-Precision: 0.75
-Recall: 0.0004423082593695633
-F1: 0.0008840951286358412
+ROC-AUC: 0.6504230351146721
+Accuracy: 0.83049
+Precision: 0.6486486486486487
+Recall: 0.0007076932149913013
+F1: 0.001413843888070692
 
 Matriz de confusión:
-[[166082      5]
- [ 33898     15]]
+[[166074     13]
+ [ 33889     24]]
               precision    recall  f1-score   support
 
            0       0.83      1.00      0.91    166087
-           1       0.75      0.00      0.00     33913
+           1       0.65      0.00      0.00     33913
 
     accuracy                           0.83    200000
-   macro avg       0.79      0.50      0.45    200000
-weighted avg       0.82      0.83      0.75    200000
+   macro avg       0.74      0.50      0.45    200000
+weighted avg       0.80      0.83      0.75    200000
 </pre></div>
 </div>
 </div>
@@ -995,7 +995,7 @@ weighted avg       0.82      0.83      0.75    200000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ef0b43771f966d65f264c8584103caa764c337688db96ff92ce8d0d65dcb75f4.png" src="_images/ef0b43771f966d65f264c8584103caa764c337688db96ff92ce8d0d65dcb75f4.png" />
+<img alt="_images/e22c59d3797ecedf201816d72dc3f66b7866ebcc20896eb9275db9f4c16593ae.png" src="_images/e22c59d3797ecedf201816d72dc3f66b7866ebcc20896eb9275db9f4c16593ae.png" />
 </div>
 </div>
 <p>podemos observar que no se detecta la clase  en las metricas usuales a pesar de tener mejores hiperparametros, por lo que se balanceara con el uso de el ajuste del umbral de decision</p>
@@ -1032,22 +1032,22 @@ weighted avg       0.82      0.83      0.75    200000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy: 0.57453
-Precision: 0.23989429282919145
-Recall: 0.6959573025093622
-F1: 0.3568005563198235
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy: 0.569225
+Precision: 0.236497528497932
+Recall: 0.6912983221773361
+F1: 0.3524274106867704
 
 Matriz de confusión:
-[[91304 74783]
- [10311 23602]]
+[[90401 75686]
+ [10469 23444]]
               precision    recall  f1-score   support
 
-           0       0.90      0.55      0.68    166087
-           1       0.24      0.70      0.36     33913
+           0       0.90      0.54      0.68    166087
+           1       0.24      0.69      0.35     33913
 
     accuracy                           0.57    200000
-   macro avg       0.57      0.62      0.52    200000
-weighted avg       0.79      0.57      0.63    200000
+   macro avg       0.57      0.62      0.51    200000
+weighted avg       0.78      0.57      0.62    200000
 </pre></div>
 </div>
 </div>
@@ -1074,7 +1074,7 @@ weighted avg       0.79      0.57      0.63    200000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3bc7741ce51d91ce87309927a01eea653c23dc3fb8592faa979c6a360b244990.png" src="_images/3bc7741ce51d91ce87309927a01eea653c23dc3fb8592faa979c6a360b244990.png" />
+<img alt="_images/48136031d87eee8829fb47635e0302bb240a3b128c83bddec56905f5b5aef9b6.png" src="_images/48136031d87eee8829fb47635e0302bb240a3b128c83bddec56905f5b5aef9b6.png" />
 </div>
 </div>
 <p>podemos observar que el modelo puede predecir de mejor manera la clase 1 y con la clase 0, a pesar de eso hubo un aumento de los falsos positivos.</p>
@@ -1090,7 +1090,7 @@ weighted avg       0.79      0.57      0.63    200000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b758131efa7cf080d9d3a7460ee6cc725fd8a9cf88dc7cc5e83e395a5c812f3e.png" src="_images/b758131efa7cf080d9d3a7460ee6cc725fd8a9cf88dc7cc5e83e395a5c812f3e.png" />
+<img alt="_images/fd1bc59d825c55143374c5d281f596c12b9c87875e4ff2d6f1ab49f7b51a5213.png" src="_images/fd1bc59d825c55143374c5d281f596c12b9c87875e4ff2d6f1ab49f7b51a5213.png" />
 </div>
 </div>
 <p>Podemos observar que la curva ROC ya no es una linea recta, y tiene un valor mayor a 0.6, por lo que discrimina mejor las clases en este caso</p>
@@ -1115,7 +1115,7 @@ weighted avg       0.79      0.57      0.63    200000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/402d265a43a16683dd463882081c0f3c23abc40e00fee609d3ca29a196545c7e.png" src="_images/402d265a43a16683dd463882081c0f3c23abc40e00fee609d3ca29a196545c7e.png" />
+<img alt="_images/5c226a57c51c9f1eec4cf03a2e2c43f70ece15bdeaba1ad64fe7ea0738886967.png" src="_images/5c226a57c51c9f1eec4cf03a2e2c43f70ece15bdeaba1ad64fe7ea0738886967.png" />
 </div>
 </div>
 <p>El ajuste del threshold permitió transformar un modelo inicialmente conservador e incapaz de detectar la clase minoritaria (recall ≈ 0) en un clasificador funcional, capaz de identificar aproximadamente el 70% de los casos positivos. Aunque esto incrementó los falsos positivos, el F1-score mejoró sustancialmente, lo cual es consistente con el comportamiento observado en la curva Precision–Recall y resulta más apropiado para un escenario altamente desbalanceado.</p>

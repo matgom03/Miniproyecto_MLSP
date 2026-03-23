@@ -13,10 +13,10 @@ Se crea la tabla de comparacion entre los mejores modelos, en pyspark y sklearn 
 | Número de features         | 13                                    | 23                                  | se utilizo una muestra de variables relevantes en sklearn |
 | ROC-AUC                    | 0.656                                 | 0.673                               | Diferencias marginales |
 | Precision                  | 0.24                                  | 0.27                                | Threshold optimizado en mejores modelos |
-| Recall                     | 0.70                                  | 0.62                                | Las metricas evaluadas en mejores modelos |
-| F1-score                   | 0.36                                  | 0.37                                | Métrica objetivo en mejores modelos |
+| Recall                     | 0.69                                  | 0.62                                | Las metricas evaluadas en mejores modelos |
+| F1-score                   | 0.35                                  | 0.37                                | Métrica objetivo en mejores modelos |
 | Threshold usado            | 0.15                                  | 0.54                                | Maximiza F1 |
-| Tiempo de entrenamiento    | 119 min                                | 208.4 min                               | En sklearn el gridsearch completo y en pyspark el grid  |
+| Tiempo de entrenamiento    | 120.12 min                                | 208.4 min                               | En sklearn el gridsearch completo y en pyspark el grid  |
 | Tiempo de validacion       | 0.01 s                                  | 0.1 s                                | En mejores modelos |
 | Facilidad de implementación| Alta                                  | Baja                            | PySpark necesito de mas instalaciones para funcionar, las cuales pueden ser delicadas  |
 
